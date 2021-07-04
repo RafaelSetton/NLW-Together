@@ -6,8 +6,8 @@ import '../../themes/app_images.dart';
 import '../../themes/app_text_styles.dart';
 
 class SocialLoginButton extends StatelessWidget {
-  final Function onTap;
-  const SocialLoginButton({Key key, this.onTap}) : super(key: key);
+  final VoidCallback onTap;
+  const SocialLoginButton({Key? key, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
