@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:payflow/modules/home/home_controller.dart';
 import 'package:payflow/shared/auth/auth_controller.dart';
 import 'package:payflow/shared/themes/app_colors.dart';
 import 'package:payflow/shared/themes/app_text_styles.dart';
@@ -12,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final controller = HomeController();
+  int currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +64,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: pages[controller.currentPage],
+      body: pages[currentPage],
       bottomNavigationBar: Container(
         height: 90,
         child: Row(
@@ -74,14 +73,12 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  controller.currentPage = 0;
+                  currentPage = 0;
                 });
               },
               icon: Icon(
                 Icons.home,
-                color: controller.currentPage == 0
-                    ? AppColors.primary
-                    : AppColors.body,
+                color: currentPage == 0 ? AppColors.primary : AppColors.body,
               ),
             ),
             Container(
@@ -92,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () => Navigator.pushNamed(context, "/scanner"),
                 icon: Icon(
                   Icons.add_box_outlined,
                   color: AppColors.background,
@@ -102,14 +99,12 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  controller.currentPage = 1;
+                  currentPage = 1;
                 });
               },
               icon: Icon(
                 Icons.description_outlined,
-                color: controller.currentPage == 1
-                    ? AppColors.primary
-                    : AppColors.body,
+                color: currentPage == 1 ? AppColors.primary : AppColors.body,
               ),
             ),
           ],

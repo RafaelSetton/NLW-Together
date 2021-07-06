@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:payflow/shared/themes/app_colors.dart';
+import 'package:payflow/shared/widgets/divider/vertical_divider.dart';
 
 import '../../themes/app_images.dart';
 import '../../themes/app_text_styles.dart';
@@ -27,10 +28,7 @@ class SocialLoginButton extends StatelessWidget {
               flex: 25,
               child: Image.asset(AppImages.google),
             ),
-            Container(
-                width: 0,
-                decoration:
-                    BoxDecoration(border: Border.all(color: AppColors.stroke))),
+            VerticalDividerWidget(),
             Expanded(
               flex: 75,
               child: Center(
