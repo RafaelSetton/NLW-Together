@@ -7,7 +7,7 @@ import 'package:payflow/shared/widgets/label_button/label_button.dart';
 class LabelButtonsSet extends StatelessWidget {
   final String primaryLabel, secondaryLabel;
   final VoidCallback primaryOnpressed, secondaryOnPressed;
-  final bool enablePrimaryColor;
+  final bool enablePrimaryColor, enableSecondaryColor;
 
   const LabelButtonsSet({
     Key? key,
@@ -16,13 +16,17 @@ class LabelButtonsSet extends StatelessWidget {
     required this.primaryOnpressed,
     required this.secondaryOnPressed,
     this.enablePrimaryColor = false,
+    this.enableSecondaryColor = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 56,
-      color: AppColors.shape,
+      decoration: BoxDecoration(
+        color: AppColors.shape,
+        border: Border(top: BorderSide(color: AppColors.stroke)),
+      ),
       child: Row(
         children: [
           Expanded(
@@ -37,6 +41,7 @@ class LabelButtonsSet extends StatelessWidget {
             child: LabelButton(
               label: secondaryLabel,
               onPressed: secondaryOnPressed,
+              style: enableSecondaryColor ? TextStyles.buttonPrimary : null,
             ),
           ),
         ],
