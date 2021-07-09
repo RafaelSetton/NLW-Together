@@ -6,6 +6,7 @@ import 'package:payflow/shared/themes/app_text_styles.dart';
 import 'package:payflow/shared/widgets/boleto_info/boleto_info_widget.dart';
 import 'package:payflow/shared/widgets/boleto_list/boleto_list_controller.dart';
 import 'package:payflow/shared/widgets/boleto_list/boleto_list_widget.dart';
+import 'dart:math';
 
 class MeusBoletosPage extends StatefulWidget {
   const MeusBoletosPage({Key? key}) : super(key: key);
@@ -14,8 +15,17 @@ class MeusBoletosPage extends StatefulWidget {
   _MeusBoletosPageState createState() => _MeusBoletosPageState();
 }
 
-class _MeusBoletosPageState extends State<MeusBoletosPage> {
+class _MeusBoletosPageState extends State<MeusBoletosPage>
+    with SingleTickerProviderStateMixin {
   final controller = BoletoListController();
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +56,34 @@ class _MeusBoletosPageState extends State<MeusBoletosPage> {
         ),
         SizedBox(height: 24),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Text(
-            "Meus boletos",
-            style: TextStyles.titleBoldHeading,
-          ),
-        ),
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Meus boletos",
+                  style: TextStyles.titleBoldHeading,
+                ),
+                AnimatedBuilder(
+                  animation: animationController,
+                  builder: (_, child) => Transform.rotate(
+                    angle: animationController.value * 2 * pi,
+                    child: child,
+                  ),
+                  child: IconButton(
+                    onPressed: () async {
+                      animationController
+                          .forward()
+                          .then((value) => animationController.reset());
+                      await controller.getBoletos();
+                      setState(() {});
+                    },
+                    icon: Icon(Icons.refresh),
+                    color: Colors.blue[300],
+                  ),
+                )
+              ],
+            )),
         Padding(
           padding: EdgeInsets.all(24),
           child: Divider(
@@ -62,11 +94,11 @@ class _MeusBoletosPageState extends State<MeusBoletosPage> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24),
-            child: RefreshIndicator(
-              onRefresh: () async => setState(() {}),
-              child: SingleChildScrollView(
-                child: BoletoListWidget(controller: controller),
-              ),
+            child: SingleChildScrollView(
+              child: ValueListenableBuilder(
+                  valueListenable: controller.boletosNotifier,
+                  builder: (_, __, ___) =>
+                      BoletoListWidget(controller: controller)),
             ),
           ),
         ),

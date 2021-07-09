@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:payflow/shared/widgets/boleto_list/boleto_list_controller.dart';
 import 'package:payflow/shared/widgets/boleto_tile/boleto_tile_widget.dart';
 
 class BoletoListWidget extends StatefulWidget {
-  final controller;
+  final BoletoListController controller;
 
   const BoletoListWidget({Key? key, required this.controller})
       : super(key: key);
@@ -13,8 +14,13 @@ class BoletoListWidget extends StatefulWidget {
 
 class _BoletoListWidgetState extends State<BoletoListWidget> {
   Widget body(BuildContext context, List boletos, Widget? _) => Column(
-        children: widget.controller.boletos
-            .map<Widget>((e) => BoletoTileWidget(boleto: e))
+        children: boletos
+            .asMap()
+            .entries
+            .map<Widget>((entry) => BoletoTileWidget(
+                boleto: entry.value,
+                index: entry.key,
+                controller: widget.controller))
             .toList(),
       );
 
